@@ -15,9 +15,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media only screen and (max-width: 700px) {
-    height: auto;
-  }
+
 `;
 
 export const DataPokemon = styled.div`
@@ -39,6 +37,7 @@ export const Content = styled.div`
 
   @media only screen and (max-width: 700px) {
     grid: none;
+    overflow-y: auto;
   }
 `;
 
@@ -72,6 +71,7 @@ export const DivCharacteristics = styled.div`
       text-align: center;
     }
   }
+
   .divCharacteristicsIntern {
     width: 50%;
     text-align: center;
@@ -86,8 +86,12 @@ export const DivCharacteristics = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin-top: 3rem;
+    text-transform: uppercase;
+    ul {
+      margin-top: 1rem;
+    }
   }
-
+  
   .titleCharacteristics {
       font: 500 1.5rem Poppins;
       margin-top: 5%;
@@ -99,7 +103,7 @@ export const StatsCharacteristics = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   margin-top: 1rem;
-
+  text-transform: capitalize;
   @media only screen and (max-width: 700px) {
     grid: none;
   }

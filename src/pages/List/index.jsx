@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Container, Content, Title, ListPokemons } from './styles';
+import { Container, Content, Title, ListPokemons, LoadingAnimate } from './styles';
 
 import pokeapi from '../../services/api';
 import Axios from 'axios';
@@ -15,13 +15,11 @@ function List() {
   const dispatch = useDispatch();
   const endPage = useRef('end');
   const pokemons = useSelector(state => state.pokemons);
-  const [nextCallAPI, setNextCallAPI] = useState('');
-
+  const nextCallAPI = useRef(null);
 
   const getPokemons = async () => {
     
-    const { data: resultPokemon } = await pokeapi.get(nextCallAPI ? nextCallAPI : '/pokemon');
-    setNextCallAPI(resultPokemon.next);
+    const { data: resultPokemon } = await pokeapi.get(nextCallAPI.current ? nextCallAPI.current : '/pokemon');
 
     const pokemonsPromisse = resultPokemon.results.map(async (pokemon) => {
       
@@ -32,19 +30,23 @@ function List() {
           'value': stats.base_stat
         }
       });
-
       data.stats = stats;
       return data;
 
     })
+    nextCallAPI.current = resultPokemon.next;
     const pokemonsList = await Promise.all(pokemonsPromisse)
     dispatch({ type: 'ADD_POKEMON_LIST', payload: pokemonsList})
   }
 
+
+
   useEffect(() => {
     getPokemons();
   }, [])
-  const teste = () => {
+
+
+  const getMorePokemons = () => {
     // Height page + number pixels that the document has been scrolled vertically
     // >= height page total
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
@@ -53,23 +55,25 @@ function List() {
   }
 
   useEffect(() => {
-    window.addEventListener("scroll", teste)
-
+    window.addEventListener("scroll", getMorePokemons)
+    
     return () => {
-      window.removeEventListener("scroll", teste)
+      window.removeEventListener("scroll", getMorePokemons)
     }
   }, [endPage.current])
 
   return (
-    <Container onClick={() => console.log(nextCallAPI)} className="container">
-      <Title onClick={getPokemons}>Pokédex</Title>
+    <Container className="container">
+      <Title >Pokédex</Title>
       <Content>
         <ListPokemons>
           {pokemons.map((pokemon) => (
             <CardPokemon key={pokemon.id} pokemon={pokemon} />
           ))}
-        </ListPokemons>
-        <h1 ref={endPage} >fim</h1>
+        </ListPokemons> 
+        <LoadingAnimate ref={endPage} >
+          <div></div>
+        </LoadingAnimate>
       </Content>
     </Container>
   );

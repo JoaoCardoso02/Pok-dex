@@ -8,7 +8,7 @@ function pokemons(state = [], action) {
                 ...action.payload
             ];
         default:
-            return state;
+            return [];
     }
 }
 

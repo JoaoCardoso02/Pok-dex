@@ -38,6 +38,7 @@ function PokemonSelected() {
                     </ul>
                   </StatsCharacteristics>
               </div>
+              
               <div className="divCharacteristicsIntern typesAbilities">
 
                 <div>
@@ -46,6 +47,7 @@ function PokemonSelected() {
                     {pokemon.types.map(element => <li>{element.type.name}</li>)}
                   </ul>
                 </div>
+                
                 <div>
                   <h4 className="titleCharacteristics">Abilities</h4>
                   <ul>
